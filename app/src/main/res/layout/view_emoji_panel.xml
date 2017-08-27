@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Panel">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d5d3d5" />
+
+    <LinearLayout
+        android:id="@+id/panel_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/PanelItem"
+            android:drawableTop="@drawable/icon_file"
+            android:text="文件" />
+
+        <TextView
+            style="@style/PanelItem"
+            android:drawableTop="@drawable/icon_photo"
+            android:text="拍照" />
+
+    </LinearLayout>
+
+</merge>
