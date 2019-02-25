@@ -1,4 +1,4 @@
-package com.czy.keyboard.common;
+package leavesc.hello.keyboard.common;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;

@@ -1,4 +1,4 @@
-package com.czy.keyboard;
+package leavesc.hello.keyboard;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +10,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_unresolved).setOnClickListener(new View.OnClickListener() {
+        setContentView(leavesc.hello.keyboard.R.layout.activity_main);
+        findViewById(leavesc.hello.keyboard.R.id.btn_unresolved).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, UnresolvedActivity.class));
             }
         });
-        findViewById(R.id.btn_resolved).setOnClickListener(new View.OnClickListener() {
+        findViewById(leavesc.hello.keyboard.R.id.btn_resolved).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ResolvedActivity.class));

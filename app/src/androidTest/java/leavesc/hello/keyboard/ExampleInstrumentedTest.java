@@ -1,4 +1,4 @@
-package com.czy.keyboard;
+package leavesc.hello.keyboard;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.czy.keyboard", appContext.getPackageName());
+        assertEquals("leavesc.hello.keyboard", appContext.getPackageName());
     }
 }

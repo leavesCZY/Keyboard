@@ -1,12 +1,11 @@
-package com.czy.keyboard.common;
-
+package leavesc.hello.keyboard.common;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 
-import com.czy.keyboard.R;
-
 import java.util.List;
+
+import leavesc.hello.keyboard.R;
 
 /**
  * 作者：叶应是叶

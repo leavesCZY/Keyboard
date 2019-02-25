@@ -1,4 +1,4 @@
-package com.czy.keyboard.common;
+package leavesc.hello.keyboard.common;
 
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
