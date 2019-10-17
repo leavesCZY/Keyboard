@@ -8,10 +8,15 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import java.lang.reflect.Field;
 
 /**
  * 作者： chenZY
@@ -40,9 +45,13 @@ public class EmojiKeyboard {
 
     private static final String KEY_SOFT_KEYBOARD_HEIGHT = "SoftKeyboardHeight";
 
+    private static final String CURRENT_KEY_SOFT_KEYBOARD_HEIGHT = "Current_SoftKeyboardHeight";
+
+
     private static final int SOFT_KEYBOARD_HEIGHT_DEFAULT = 654;
 
     private Handler handler;
+    private View parentView;
 
     public EmojiKeyboard(Activity activity, EditText editText, View emojiPanelView, View emojiPanelSwitchView, View contentView) {
         init(activity, editText, emojiPanelView, emojiPanelSwitchView, contentView);
@@ -64,6 +73,8 @@ public class EmojiKeyboard {
                 return false;
             }
         });
+
+        parentView = emojiPanelView.getRootView();
         this.contentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -151,31 +162,18 @@ public class EmojiKeyboard {
     }
 
     /**
-     * 获取键盘的高度
+     * 获取当前键盘的高度
      */
     private int getSoftKeyboardHeight() {
-        Rect rect = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        //屏幕当前可见高度，不包括状态栏
-        int displayHeight = rect.bottom - rect.top;
-        //屏幕可用高度
-        int availableHeight = ScreenUtils.getAvailableScreenHeight(activity);
-        //用于计算键盘高度
-        int softInputHeight = availableHeight - displayHeight - ScreenUtils.getStatusBarHeight(activity);
-        Log.e("TAG-di", displayHeight + "");
-        Log.e("TAG-av", availableHeight + "");
-        Log.e("TAG-so", softInputHeight + "");
-        if (softInputHeight != 0) {
-            // 因为考虑到用户可能会主动调整键盘高度，所以只能是每次获取到键盘高度时都将其存储起来
-            sharedPreferences.edit().putInt(KEY_SOFT_KEYBOARD_HEIGHT, softInputHeight).apply();
-        }
-        return softInputHeight;
+        int currentHeight = sharedPreferences.getInt(CURRENT_KEY_SOFT_KEYBOARD_HEIGHT, SOFT_KEYBOARD_HEIGHT_DEFAULT);
+        return currentHeight;
     }
 
     /**
      * 获取本地存储的键盘高度值或者是返回默认值
      */
     private int getSoftKeyboardHeightLocalValue() {
+
         return sharedPreferences.getInt(KEY_SOFT_KEYBOARD_HEIGHT, SOFT_KEYBOARD_HEIGHT_DEFAULT);
     }
 
@@ -198,7 +196,7 @@ public class EmojiKeyboard {
                 public void run() {
                     getSoftKeyboardHeight();
                 }
-            }, 200);
+            }, 100);
         }
     }
 
@@ -231,13 +229,26 @@ public class EmojiKeyboard {
      */
     private void hideEmojiPanel(boolean showSoftKeyboard) {
         if (emojiPanelView.isShown()) {
-            emojiPanelView.setVisibility(View.GONE);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    emojiPanelView.setVisibility(View.GONE);
+                }
+            }, 200);
+
             if (showSoftKeyboard) {
                 showSoftKeyboard(false);
             }
             if (emojiPanelVisibilityChangeListener != null) {
                 emojiPanelVisibilityChangeListener.onHideEmojiPanel();
             }
+        }
+    }
+
+    public void storeKeyboardHeight(int realKeyboardHeight) {
+        sharedPreferences.edit().putInt(CURRENT_KEY_SOFT_KEYBOARD_HEIGHT, realKeyboardHeight).apply();
+        if (realKeyboardHeight != 0) {
+            sharedPreferences.edit().putInt(KEY_SOFT_KEYBOARD_HEIGHT, realKeyboardHeight).apply();
         }
     }
 
